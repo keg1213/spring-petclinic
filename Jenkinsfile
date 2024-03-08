@@ -17,8 +17,8 @@ pipeline {
           success {
             echo 'Git clone Success!!'
       }
-      failure {
-        echo 'Git clone Fail'
+          failure {
+            echo 'Git clone Fail'
           }
       }
   }
@@ -27,12 +27,12 @@ pipeline {
             echo 'Maven Build'
             sh 'mvn -Dmaven.test.failure.ignore=true clean package'
         }
-      }
       post {
           success {
               junit 'target/surefire-reports/**/*.xml'
           }
       }
+  }
       stage('SSH Publish'){
         steps {
             echo 'SSH Publish'

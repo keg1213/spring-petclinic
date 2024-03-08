@@ -22,4 +22,5 @@ pipeline {
       failure {
         echo 'Git clone Fail'
       }
+  }
 }

@@ -15,7 +15,7 @@ pipeline {
         }
       }
     
-    post {
+      post {
       success {
         echo 'Git clone Success!!'
       }

@@ -13,14 +13,13 @@ pipeline {
             git url: 'https://github.com/keg1213/spring-petclinic.git',
               branch: 'efficient-webjars'
         }
-      }
-    
-      post {
-      success {
-        echo 'Git clone Success!!'
+        post {
+          success {
+            echo 'Git clone Success!!'
       }
       failure {
         echo 'Git clone Fail'
+          }
       }
   }
       stage('Maven Build'){

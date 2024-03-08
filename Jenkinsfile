@@ -6,7 +6,7 @@ pipeline {
     maven "M3"
   }
   
-    stages {
+  stages {
       stage('Git clone'){
         steps {
             echo 'Git clone'
@@ -14,7 +14,7 @@ pipeline {
               branch: 'efficient-webjars'
         }
       }
-    }
+    
     post {
       success {
         echo 'Git clone Success!!'
@@ -23,4 +23,39 @@ pipeline {
         echo 'Git clone Fail'
       }
   }
+      stage('Maven Build'){
+        steps {
+            echo 'Maven Build'
+            sh 'mvn -Dmaven.test.failure.ignore=true clean package'
+        }
+      }
+      post {
+          success {
+              junit 'target/surefire-reports/**/*.xml'
+          }
+      }
+      stage('SSH Publish'){
+        steps {
+            echo 'SSH Publish'
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
+                transfers: [sshTransfer(cleanRemote: false, 
+                excludes: '', 
+                execCommand: '''
+                fuser -k 8080/tcp
+                export BUILD_ID=Pipeline-Test
+                nohup java -jar /home/ubuntu/deploy/spring-petclinic-2.4.0.BUILD-SNAPSHOT.jar >> nohup.out 2>&1 &''', 
+                execTimeout: 120000, 
+                flatten: false, 
+                makeEmptyDirs: false, 
+                noDefaultExcludes: false, 
+                patternSeparator: '[, ]+', 
+                remoteDirectory: 'deploy', 
+                remoteDirectorySDF: false, 
+                removePrefix: 'target', 
+                sourceFiles: 'target/*.jar')], 
+                usePromotionTimestamp: false, 
+                useWorkspaceInPromotion: false, verbose: false)])
+        }
+      }
+    }
 }

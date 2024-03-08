@@ -16,12 +16,12 @@ pipeline {
         post {
           success {
             echo 'Git clone Success!!'
-      }
+          }
           failure {
             echo 'Git clone Fail'
           }
-      }
-  }
+        }
+      }  
       stage('Maven Build'){
         steps {
             echo 'Maven Build'
@@ -30,9 +30,9 @@ pipeline {
         post {
             success {
             junit 'target/surefire-reports/**/*.xml'
-          }
+            }
+        }
       }
-  }
       stage('SSH Publish'){
         steps {
             echo 'SSH Publish'

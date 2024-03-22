@@ -5,8 +5,6 @@ pipeline {
     jdk "jdk17"
     maven "M3"
   }
-  // 환경설정
-  // 설정환경
   environment {
          AWS_CREDENTIAL_NAME = "AWSCredentials"
          REGION = "ap-northeast-2"
